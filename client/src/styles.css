@@ -650,93 +650,48 @@ select:focus {
   font-family: "SFMono-Regular", ui-monospace, "PingFang SC", "Microsoft YaHei", monospace;
 }
 
-/* Right-column tabs: 教学设计预览 / AI 引导助手 */
-.preview-tabs {
+/* 单元定位型文本解读报告（分区展示） */
+.report-panel {
+  border: 1px solid var(--line);
+  background: var(--panel2);
+  border-radius: var(--radius);
+  padding: 16px;
   display: flex;
-  gap: 4px;
-  background: #edf1f3;
-  padding: 4px;
-  border-radius: 12px;
-  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 14px;
 }
-.preview-tabs .tab {
-  flex: 1;
-  border: 0;
-  background: transparent;
-  border-radius: 9px;
-  padding: 9px 10px;
+.report-panel h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #152536;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--brand2);
+}
+.report-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--line);
+}
+.report-section:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.report-section h4 {
+  margin: 0;
+  font-size: 14px;
   font-weight: 800;
-  font-size: 13px;
-  color: var(--muted);
-  transition: 0.15s ease;
+  color: #0f4f4b;
 }
-.preview-tabs .tab.active {
-  background: #fff;
-  color: var(--brand);
-  box-shadow: 0 2px 8px rgba(31, 41, 51, 0.08);
-}
+
+/* 右栏预览面板（AI 引导助手已改为右下角悬浮气泡，见 DifyBubble 组件） */
 .preview-tab-pane {
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-/* AI 引导助手 tab (Dify iframe) */
-.assistant-tab-pane {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-}
-.assistant-card {
-  border: 1px solid var(--line);
-  background: #fff;
-  border-radius: 16px;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.assistant-card h3 {
-  margin: 0;
-  font-size: 16px;
-  color: #152536;
-}
-.assistant-sub {
-  margin: 2px 0 0;
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.5;
-}
-.assistant-note {
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  font-size: 12.5px;
-  line-height: 1.6;
-  color: #475467;
-}
-.assistant-note strong {
-  color: var(--brand);
-}
-.assistant-iframe-wrap {
-  flex: 1;
-  min-height: 700px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: #fbf7ef;
-}
-.assistant-iframe-wrap iframe {
-  width: 100%;
-  height: 100%;
-  min-height: 700px;
-  border: 0;
-  display: block;
 }
 
 .toast {
@@ -858,12 +813,6 @@ select:focus {
   .step-no {
     width: 26px;
     height: 26px;
-  }
-  .assistant-iframe-wrap iframe {
-    min-height: 70vh;
-  }
-  .assistant-iframe-wrap {
-    min-height: 70vh;
   }
 }
 

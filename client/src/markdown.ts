@@ -68,8 +68,10 @@ export function buildFinalMarkdown(input: DesignInput, r: Partial<Results>): str
 ### 四、课堂转化设计
 - 一句话课时定位：${unit.classroomTransfer.oneSentenceLessonPosition}
 - 唯一核心抓手：${unit.classroomTransfer.coreHandle}
+- 进入建议：${unit.classroomTransfer.entrySuggestion}
 - 递进任务建议：${unit.classroomTransfer.progressiveTasks.join("；") || "无"}
 - 学习证据：${unit.classroomTransfer.learningEvidence}
+- 教学提醒：${unit.classroomTransfer.teachingWarnings.join("；") || "无"}
 
 ### 五、证据链表
 ${unit.evidenceChain.map((e) => `- ${e.judgmentType}｜${e.conclusion}｜${e.evidenceSource}：${e.evidenceSummary}`).join("\n")}
