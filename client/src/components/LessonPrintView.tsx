@@ -157,8 +157,8 @@ export default function LessonPrintView({ input, results }: { input: DesignInput
 
       <h2 className="pa-h1">八、板书设计</h2>
       <p className="pa-p">{topic}</p>
-      <p className="pa-p">起因 → 经过 → 结果</p>
-      <p className="pa-p">词句证据 → 人物形象 → 神话精神</p>
+      <p className="pa-p">起风前（沉闷寂静）→ 凉风（报信）→ 大风（剧烈）→ 再次寂静（蓄势）→ 雷声（爆发）</p>
+      <p className="pa-p">景物 · 声音 · 感受 —— 有顺序地写出“变化的过程”（变化地图）</p>
 
       <h2 className="pa-h1">九、质量体检报告</h2>
       {quality.length ? (

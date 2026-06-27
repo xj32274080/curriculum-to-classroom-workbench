@@ -182,8 +182,8 @@ export async function exportLessonToDocx(input: DesignInput, results: Results): 
   // 八、板书设计
   children.push(h1("八、板书设计"));
   children.push(p(topic));
-  children.push(p("起因 → 经过 → 结果"));
-  children.push(p("词句证据 → 人物形象 → 神话精神"));
+  children.push(p("起风前（沉闷寂静）→ 凉风（报信）→ 大风（剧烈）→ 再次寂静（蓄势）→ 雷声（爆发）"));
+  children.push(p("景物 · 声音 · 感受 —— 有顺序地写出“变化的过程”（变化地图）"));
 
   // 九、质量体检报告（表格）
   children.push(h1("九、质量体检报告"));

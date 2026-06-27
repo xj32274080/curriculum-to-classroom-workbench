@@ -28,6 +28,17 @@ export default function PreviewPanel({
   const liveMd = buildFinalMarkdown(input, results);
   const md = finalMarkdown ?? liveMd;
   const pct = Math.round((completed / 6) * 100);
+  // Word/PDF 只要已经生成任意一步内容即可导出（不必先点“生成完整教学设计”）
+  const hasContent =
+    Boolean(
+      results.unitAnalysisReport ||
+        results.standard ||
+        results.goals ||
+        (results.evidence && results.evidence.length) ||
+        (results.tasks && results.tasks.length) ||
+        results.support ||
+        finalMarkdown,
+    );
 
   const bannerClass = fallbackMessage
     ? "mode-banner fallback"
@@ -51,8 +62,8 @@ export default function PreviewPanel({
   };
 
   const handleWord = async () => {
-    if (!finalMarkdown) {
-      onToast("请先生成完整教学设计");
+    if (!hasContent) {
+      onToast("请先至少生成一步内容再导出 Word");
       return;
     }
     try {
@@ -67,8 +78,8 @@ export default function PreviewPanel({
   };
 
   const handlePrint = () => {
-    if (!finalMarkdown) {
-      onToast("请先生成完整教学设计");
+    if (!hasContent) {
+      onToast("请先至少生成一步内容再打印 / 导出 PDF");
       return;
     }
     window.print();
@@ -108,8 +119,8 @@ export default function PreviewPanel({
             type="button"
             className="btn green"
             onClick={handleWord}
-            disabled={!finalMarkdown}
-            title={finalMarkdown ? "下载 Word 文档" : "请先生成完整教学设计"}
+            disabled={!hasContent}
+            title={hasContent ? "下载 Word 文档" : "请先生成至少一步内容"}
           >
             下载 Word
           </button>
@@ -117,8 +128,8 @@ export default function PreviewPanel({
             type="button"
             className="btn secondary"
             onClick={handlePrint}
-            disabled={!finalMarkdown}
-            title={finalMarkdown ? "打印或另存为 PDF" : "请先生成完整教学设计"}
+            disabled={!hasContent}
+            title={hasContent ? "打印或另存为 PDF" : "请先生成至少一步内容"}
           >
             打印 / 导出 PDF
           </button>

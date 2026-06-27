@@ -189,6 +189,17 @@ export default function App() {
   }, [showToast]);
 
   const step = NAV_STEPS[active];
+  // 打印区只要有任意一步生成内容就渲染（Word/PDF 不再强制要求先生成完整教案）
+  const hasContent =
+    Boolean(
+      results.unitAnalysisReport ||
+        results.standard ||
+        results.goals ||
+        (results.evidence && results.evidence.length) ||
+        (results.tasks && results.tasks.length) ||
+        results.support ||
+        finalMarkdown,
+    );
 
   return (
     <>
@@ -272,7 +283,7 @@ export default function App() {
       {/* 右下角悬浮 AI 引导助手（Dify bubble），全局常驻，不依赖当前步骤 */}
       <DifyBubble />
 
-      {finalMarkdown && (
+      {hasContent && (
         <div className="print-area">
           <LessonPrintView input={input} results={results} />
         </div>
