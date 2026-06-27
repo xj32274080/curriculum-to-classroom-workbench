@@ -61,7 +61,7 @@ export default function StartPanel({ input, onChange, onFillDemo, onStart }: Pro
         </div>
         <div className="field-block">
           <label>教学主题</label>
-          <input value={input.topic} placeholder="如：《精卫填海》神话阅读" onChange={(e) => onChange("topic", e.target.value)} />
+          <input value={input.topic} placeholder="如：《暴风雨来临之前》阅读" onChange={(e) => onChange("topic", e.target.value)} />
         </div>
         <div className="field-block">
           <label>课时</label>
@@ -89,7 +89,7 @@ export default function StartPanel({ input, onChange, onFillDemo, onStart }: Pro
               <label>当前课文</label>
               <input
                 value={input.currentTextTitle}
-                placeholder="如：精卫填海"
+                placeholder="如：暴风雨来临之前"
                 onChange={(e) => onChange("currentTextTitle", e.target.value)}
               />
             </div>
@@ -97,7 +97,7 @@ export default function StartPanel({ input, onChange, onFillDemo, onStart }: Pro
               <label>教材版本 / 单元信息</label>
               <input
                 value={input.textbook}
-                placeholder="如：统编版四年级上册第四单元"
+                placeholder="如：统编版三年级 写景单元"
                 onChange={(e) => onChange("textbook", e.target.value)}
               />
             </div>
@@ -129,7 +129,7 @@ export default function StartPanel({ input, onChange, onFillDemo, onStart }: Pro
         </button>
       </div>
       <div className="hint">
-        <strong>演示建议：</strong>现场先用《精卫填海》跑通，再说明它可以替换为任意学科、课标和主题。
+        <strong>演示建议：</strong>现场先用《暴风雨来临之前》跑通，再说明它可以替换为任意学科、课标和主题。
       </div>
     </>
   );
