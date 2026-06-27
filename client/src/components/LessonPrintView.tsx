@@ -11,7 +11,7 @@ export default function LessonPrintView({ input, results }: { input: DesignInput
   const tasks = results.tasks || [];
   const support = results.support;
   const quality = results.quality || [];
-  const unit = results.unitPositioning;
+  const unit = results.unitAnalysisReport;
 
   return (
     <div className="pa-doc">
@@ -20,13 +20,36 @@ export default function LessonPrintView({ input, results }: { input: DesignInput
 
       {unit && (
         <>
-          <h2 className="pa-h1">单元定位</h2>
-          <p className="pa-p">单元主题：{unit.unitTheme}</p>
-          <p className="pa-p">语文要素：{unit.chineseElement}</p>
-          <p className="pa-p">编排关系：{unit.textArrangement}</p>
-          <p className="pa-p">当前课文功能：{unit.currentTextFunction}</p>
-          <p className="pa-p">核心教学抓手：{unit.coreTeachingFocus}</p>
-          <p className="pa-p">不宜过度展开：{unit.notSuitableForExpansion.join("；") || "无"}</p>
+          <h2 className="pa-h1">单元定位型文本解读报告</h2>
+          <p className="pa-p"><b>一、单元扫描结果</b></p>
+          <p className="pa-p">语文要素：{unit.unitScan.chineseElement}</p>
+          <p className="pa-p">单元主题任务：{unit.unitScan.unitThemeTask}</p>
+          <p className="pa-p">编排关系：{unit.unitScan.arrangementLogic}</p>
+          <p className="pa-p">当前课文位置：{unit.unitScan.currentTextPosition}</p>
+          <p className="pa-p">初步判断：{unit.unitScan.initialJudgment}</p>
+          <p className="pa-p"><b>二、当前课文深度解读</b></p>
+          <p className="pa-p">最值得教：{unit.textDeepReading.mostWorthTeaching}</p>
+          <p className="pa-p">核心教学支撑：{unit.textDeepReading.coreTeachingSupport}</p>
+          <p className="pa-p">唯一核心能力：{unit.textDeepReading.oneCoreAbility}</p>
+          <p className="pa-p">常见误读：{unit.textDeepReading.commonMisreadings.join("；") || "无"}</p>
+          <p className="pa-p"><b>三、儿童起点与理解路径分析</b></p>
+          <p className="pa-p">进入点：{unit.studentPath.entryPoints}</p>
+          <p className="pa-p">可能障碍：{unit.studentPath.likelyObstacles.join("；") || "无"}</p>
+          <p className="pa-p">适合抵达的感受：{unit.studentPath.suitableFeelings}</p>
+          <p className="pa-p">年级衔接：{unit.studentPath.gradeConnection}</p>
+          <p className="pa-p"><b>四、课堂转化设计</b></p>
+          <p className="pa-p">一句话课时定位：{unit.classroomTransfer.oneSentenceLessonPosition}</p>
+          <p className="pa-p">唯一核心抓手：{unit.classroomTransfer.coreHandle}</p>
+          <p className="pa-p">递进任务建议：{unit.classroomTransfer.progressiveTasks.join("；") || "无"}</p>
+          <p className="pa-p">学习证据：{unit.classroomTransfer.learningEvidence}</p>
+          <p className="pa-p"><b>五、证据链表</b></p>
+          {unit.evidenceChain.map((e, i) => (
+            <p className="pa-p" key={i}>
+              {e.judgmentType}｜{e.conclusion}｜{e.evidenceSource}：{e.evidenceSummary}
+            </p>
+          ))}
+          <p className="pa-p"><b>六、最终结论</b></p>
+          <p className="pa-p">{unit.finalConclusion}</p>
         </>
       )}
 

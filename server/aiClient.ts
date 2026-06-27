@@ -86,7 +86,7 @@ function validateShape(step: ApiStep, data: unknown): void {
     throw new Error("返回结构异常: " + msg);
   };
   switch (step) {
-    case "unit-positioning":
+    case "unit-analysis-report":
     case "standard-analysis":
     case "goals":
       if (!isObj(data)) fail(`应为对象，实际为 ${Array.isArray(data) ? "数组" : typeof data}`);

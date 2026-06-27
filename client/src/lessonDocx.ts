@@ -70,7 +70,7 @@ export async function exportLessonToDocx(input: DesignInput, results: Results): 
   const tasks = results.tasks || [];
   const support = results.support;
   const quality = results.quality || [];
-  const unit = results.unitPositioning;
+  const unit = results.unitAnalysisReport;
 
   const children: Array<Paragraph | Table> = [];
 
@@ -79,13 +79,34 @@ export async function exportLessonToDocx(input: DesignInput, results: Results): 
   children.push(center('由“课标到课堂｜AI教学设计工作台”生成', { size: 20, color: "888888", after: 220 }));
 
   if (unit) {
-    children.push(h1("单元定位"));
-    children.push(p(`单元主题：${unit.unitTheme}`));
-    children.push(p(`语文要素：${unit.chineseElement}`));
-    children.push(p(`编排关系：${unit.textArrangement}`));
-    children.push(p(`当前课文功能：${unit.currentTextFunction}`));
-    children.push(p(`核心教学抓手：${unit.coreTeachingFocus}`));
-    children.push(p(`不宜过度展开：${unit.notSuitableForExpansion.join("；") || "无"}`));
+    children.push(h1("单元定位型文本解读报告"));
+    children.push(p("一、单元扫描结果", { bold: true }));
+    children.push(p(`语文要素：${unit.unitScan.chineseElement}`));
+    children.push(p(`单元主题任务：${unit.unitScan.unitThemeTask}`));
+    children.push(p(`编排关系：${unit.unitScan.arrangementLogic}`));
+    children.push(p(`当前课文位置：${unit.unitScan.currentTextPosition}`));
+    children.push(p(`初步判断：${unit.unitScan.initialJudgment}`));
+    children.push(p("二、当前课文深度解读", { bold: true }));
+    children.push(p(`最值得教：${unit.textDeepReading.mostWorthTeaching}`));
+    children.push(p(`核心教学支撑：${unit.textDeepReading.coreTeachingSupport}`));
+    children.push(p(`唯一核心能力：${unit.textDeepReading.oneCoreAbility}`));
+    children.push(p(`常见误读：${unit.textDeepReading.commonMisreadings.join("；") || "无"}`));
+    children.push(p("三、儿童起点与理解路径分析", { bold: true }));
+    children.push(p(`进入点：${unit.studentPath.entryPoints}`));
+    children.push(p(`可能障碍：${unit.studentPath.likelyObstacles.join("；") || "无"}`));
+    children.push(p(`适合抵达的感受：${unit.studentPath.suitableFeelings}`));
+    children.push(p(`年级衔接：${unit.studentPath.gradeConnection}`));
+    children.push(p("四、课堂转化设计", { bold: true }));
+    children.push(p(`一句话课时定位：${unit.classroomTransfer.oneSentenceLessonPosition}`));
+    children.push(p(`唯一核心抓手：${unit.classroomTransfer.coreHandle}`));
+    children.push(p(`递进任务建议：${unit.classroomTransfer.progressiveTasks.join("；") || "无"}`));
+    children.push(p(`学习证据：${unit.classroomTransfer.learningEvidence}`));
+    children.push(p("五、证据链表", { bold: true }));
+    unit.evidenceChain.forEach((e) => {
+      children.push(p(`${e.judgmentType}｜${e.conclusion}｜${e.evidenceSource}：${e.evidenceSummary}`));
+    });
+    children.push(p("六、最终结论", { bold: true }));
+    children.push(p(unit.finalConclusion));
   }
 
   // 一、课标依据

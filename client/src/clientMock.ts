@@ -17,21 +17,62 @@ import type {
   StandardAnalysis,
   Support,
   TaskItem,
-  UnitPositioning,
+  UnitAnalysisReport,
 } from "./types";
 
-export const CLIENT_MOCK_UNIT_POSITIONING: UnitPositioning = {
-  unitTheme: "神话故事中的想象与精神追求",
-  chineseElement: "了解故事起因、经过、结果，感受神话中神奇的想象和鲜明的人物形象。",
-  textArrangement:
-    "本单元由中外神话组成，从创世、抗争、奉献等不同角度呈现神话人物。《精卫填海》篇幅短小，适合作为由情节概括走向证据解释的关键文本。",
-  afterClassExerciseFocus: "课后题和语文园地共同指向讲清故事、抓关键词句交流人物印象、体会神话想象。",
-  currentTextFunction: "帮助学生从复述神话情节推进到依据文言关键词解释人物形象。",
-  coreTeachingFocus: "抓住“衔”“堙”等行为词，把精卫持续填海的动作转化为有证据的人物形象理解。",
-  notSuitableForExpansion: ["不宜过度拓展神话谱系", "不宜把课堂变成文言知识细讲", "不宜脱离文本泛谈坚持精神"],
-  targetAdvice: "后续目标应收束在“讲清故事结构”和“结合关键词句说明精卫形象”，再适度联系神话想象。",
+export const CLIENT_MOCK_UNIT_ANALYSIS_REPORT: UnitAnalysisReport = {
+  currentText: "精卫填海",
+  unitScan: {
+    chineseElement: "了解故事起因、经过、结果，感受神话中神奇的想象和鲜明的人物形象。",
+    unitThemeTask: "借助一组中外神话，理解神话以奇特想象承载人的精神追求。",
+    arrangementLogic:
+      "本单元由创世、抗争、奉献、补天等神话组成。《精卫填海》篇幅短小、语言凝练，适合承担从讲清故事走向抓关键词解释形象的中段功能。",
+    currentTextPosition: "位于单元内部的文言神话文本，是学生从现代叙事阅读过渡到凭借凝练语句提取证据的关键课文。",
+    initialJudgment: "较强判断：本课不宜平均铺开神话背景、文言知识和精神升华，应收束到“用行为词解释人物形象”。",
+  },
+  textDeepReading: {
+    mostWorthTeaching: "最值得教的是“衔”“堙”等动作词如何把精卫持续填海的形象压缩进极短文本。",
+    coreTeachingSupport: "当前课文原文中“溺而不返”“常衔西山之木石，以堙于东海”提供了直接文本证据。",
+    oneCoreAbility: "抓住关键词句，结合故事结构解释神话人物形象。",
+    commonMisreadings: ["只复述精卫填海的故事", "把“坚持不懈”当作空泛口号", "把课堂变成文言字词串讲"],
+  },
+  studentPath: {
+    entryPoints: "学生容易从“为什么填海、怎样填海”进入文本，可先用起因—经过—结果讲清故事。",
+    likelyObstacles: ["能说情节但找不到证据", "找到词句但不会解释", "把神话精神讲成成人化大道理"],
+    suitableFeelings: "适合抵达“精卫弱小却持续行动”的具体感受，而不是泛泛拔高为宏大精神。",
+    gradeConnection: "四年级学生可从复述故事提升到用关键词句支撑判断，为后续阅读人物形象类文本打基础。",
+  },
+  classroomTransfer: {
+    oneSentenceLessonPosition: "这是一节借文言神话训练学生“抓行为词解释人物形象”的课。",
+    coreHandle: "围绕“衔”“堙”“常”建立动作证据链。",
+    entrySuggestion: "先让学生讲清故事，再追问“你从哪个词看出精卫一直在做这件事”。",
+    progressiveTasks: ["讲清精卫填海的起因、经过、结果", "圈出最能表现精卫行为的关键词", "用词句证据解释精卫形象", "用一句话说明这个神话最打动自己的地方"],
+    learningEvidence: "学生能用“我从……看出……因为……”说清一个有文本证据的人物判断。",
+    teachingWarnings: ["不要平均拓展其他神话", "不要过度讲解文言知识", "不要脱离词句直接喊精神口号"],
+  },
+  evidenceChain: [
+    {
+      conclusion: "本课核心抓手应落在行为词证据上。",
+      evidenceSource: "当前课文原文",
+      evidenceSummary: "“常衔西山之木石，以堙于东海”集中呈现精卫持续行动。",
+      judgmentType: "明确判断",
+    },
+    {
+      conclusion: "本课承担从故事复述走向形象解释的功能。",
+      evidenceSource: "单元语文要素与课后题方向",
+      evidenceSummary: "材料指向讲清故事、交流人物印象和体会神话想象。",
+      judgmentType: "较强判断",
+    },
+    {
+      conclusion: "其他课文只宜作为定位参照，不宜展开比较教学。",
+      evidenceSource: "单元课文目录",
+      evidenceSummary: "目录能显示神话群文关系，但未提供足够课后题细节支持展开比较。",
+      judgmentType: "谨慎判断",
+    },
+  ],
+  finalConclusion:
+    "《精卫填海》的课时定位应从“讲清故事”收束到“抓行为词解释人物形象”。后续教学目标、评价证据和任务链都应围绕这一唯一核心抓手展开。",
 };
-
 export const CLIENT_MOCK_STANDARD: StandardAnalysis = {
   keywords: ["把握主要内容", "体会思想感情", "结合文本证据"],
   coreAbilities: ["概括故事结构", "提取关键证据", "解释人物形象", "理解神话表达"],
@@ -122,8 +163,8 @@ export const CLIENT_MOCK_QUALITY: QualityItem[] = [
 /** Returns the same-shaped mock payload the backend would, for offline fallback. */
 export function clientMockForStep(step: ApiStep, input: DesignInput, draft: Partial<Results>): unknown {
   switch (step) {
-    case "unit-positioning":
-      return CLIENT_MOCK_UNIT_POSITIONING;
+    case "unit-analysis-report":
+      return CLIENT_MOCK_UNIT_ANALYSIS_REPORT;
     case "standard-analysis":
       return CLIENT_MOCK_STANDARD;
     case "goals":

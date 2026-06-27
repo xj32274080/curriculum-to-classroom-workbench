@@ -5,7 +5,7 @@ import {
   StandardEditor,
   SupportEditor,
   TasksEditor,
-  UnitPositioningCard,
+  UnitAnalysisReportPanel,
 } from "./ResultCards";
 import QualityCheckPanel from "./QualityCheckPanel";
 
@@ -18,7 +18,7 @@ interface Props {
   finalLoading: boolean;
   hasFinal: boolean;
   onGenerate: () => void;
-  onGenerateUnitPositioning: () => void;
+  onGenerateUnitAnalysisReport: () => void;
   onEdit: (path: string, value: string) => void;
   onNext: () => void;
   onBuildFinal: () => void;
@@ -63,7 +63,7 @@ export default function StepWorkspace({
   finalLoading,
   hasFinal,
   onGenerate,
-  onGenerateUnitPositioning,
+  onGenerateUnitAnalysisReport,
   onEdit,
   onNext,
   onBuildFinal,
@@ -74,27 +74,27 @@ export default function StepWorkspace({
       ? Boolean(results.support && results.quality)
       : Boolean((results as Record<string, unknown>)[step.key]);
   const generateLabel =
-    step.key === "standard" && input.designMode === "unit-positioning" && !results.unitPositioning
-      ? "生成单元定位"
+    step.key === "standard" && input.designMode === "unit-analysis" && !results.unitAnalysisReport
+      ? "生成文本解读报告"
       : `生成${step.name}`;
-  const showStepGenerate = !(step.key === "standard" && input.designMode === "unit-positioning" && !results.unitPositioning);
+  const showStepGenerate = !(step.key === "standard" && input.designMode === "unit-analysis" && !results.unitAnalysisReport);
 
   return (
     <>
-      {step.key === "standard" && input.designMode === "unit-positioning" && (
+      {step.key === "standard" && input.designMode === "unit-analysis" && (
         <>
           <div className="hint">
-            <strong>单元定位模式：</strong>
-            先分析整单元材料，再生成更精准的教学设计。
+            <strong>单元精准模式：</strong>
+            先生成单元定位型文本解读报告，再把报告作为上游依据进入六步设计。
           </div>
           {!input.unitMaterial.trim() && (
             <div className="hint warn-hint">
-              未提供整单元材料，当前只能做基础定位；建议补充单元导语、课后题或语文园地内容。
+              单元材料不足，无法完成标准的单元定位型分析。请补充单元导语、课文目录、课后题或语文园地内容。
             </div>
           )}
           <div className="button-row">
-            <button type="button" className="btn" onClick={onGenerateUnitPositioning} disabled={unitLoading}>
-              {unitLoading ? "生成中" : results.unitPositioning ? "重新生成单元定位" : "生成单元定位"}
+            <button type="button" className="btn" onClick={onGenerateUnitAnalysisReport} disabled={unitLoading}>
+              {unitLoading ? "生成中" : results.unitAnalysisReport ? "重新生成文本解读报告" : "生成文本解读报告"}
               {unitLoading && (
                 <span className="loading-dot">
                   <i />
@@ -104,7 +104,7 @@ export default function StepWorkspace({
               )}
             </button>
           </div>
-          {results.unitPositioning && <UnitPositioningCard data={results.unitPositioning} />}
+          {results.unitAnalysisReport && <UnitAnalysisReportPanel data={results.unitAnalysisReport} />}
         </>
       )}
 

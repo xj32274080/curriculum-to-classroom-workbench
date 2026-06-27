@@ -21,25 +21,25 @@ export default function StartPanel({ input, onChange, onFillDemo, onStart }: Pro
           <span>快速设计</span>
           <small>输入课标、主题和学情，快速生成基础版教学设计。</small>
         </label>
-        <label className={`mode-card ${input.designMode === "unit-positioning" ? "active" : ""}`}>
+        <label className={`mode-card ${input.designMode === "unit-analysis" ? "active" : ""}`}>
           <input
             type="radio"
             name="designMode"
-            checked={input.designMode === "unit-positioning"}
-            onChange={() => onChange("designMode", "unit-positioning")}
+            checked={input.designMode === "unit-analysis"}
+            onChange={() => onChange("designMode", "unit-analysis")}
           />
-          <span>单元定位设计</span>
-          <small>提供整单元材料，先判断本课在单元中的教学功能，再生成精准教学设计。</small>
+          <span>单元精准设计</span>
+          <small>提供整单元材料，先生成单元定位型文本解读报告，再进入精准教学设计。</small>
         </label>
       </div>
       <div className="hint">
-        {input.designMode === "unit-positioning"
-          ? "单元定位模式：先分析整单元材料，再生成更精准的教学设计。"
+        {input.designMode === "unit-analysis"
+          ? "单元精准模式：先运行单元定位型文本解读主提示词 3.0，再进入六步教学设计。"
           : "快速模式：基于课标、主题和学情生成基础版设计。"}
       </div>
-      {input.designMode === "unit-positioning" && !input.unitMaterial.trim() && (
+      {input.designMode === "unit-analysis" && !input.unitMaterial.trim() && (
         <div className="hint warn-hint">
-          未提供整单元材料，当前只能做基础定位；建议补充单元导语、课后题或语文园地内容。
+          单元材料不足，无法完成标准的单元定位型分析。请补充单元导语、课文目录、课后题或语文园地内容。
         </div>
       )}
       <div className="form-grid">
@@ -83,7 +83,7 @@ export default function StartPanel({ input, onChange, onFillDemo, onStart }: Pro
             onChange={(e) => onChange("difficulty", e.target.value)}
           />
         </div>
-        {input.designMode === "unit-positioning" && (
+        {input.designMode === "unit-analysis" && (
           <>
             <div className="field-block">
               <label>当前课文</label>

@@ -3,7 +3,7 @@
 
 export type ApiStep =
   | "start"
-  | "unit-positioning"
+  | "unit-analysis-report"
   | "standard-analysis"
   | "goals"
   | "evidence"
@@ -12,7 +12,7 @@ export type ApiStep =
   | "final-lesson";
 
 export type Provider = "mock" | "openai" | "anthropic" | "dify";
-export type DesignMode = "quick" | "unit-positioning";
+export type DesignMode = "quick" | "unit-analysis";
 
 export interface DesignInput {
   designMode: DesignMode;
@@ -29,15 +29,42 @@ export interface DesignInput {
   textContent: string;
 }
 
-export interface UnitPositioning {
-  unitTheme: string;
-  chineseElement: string;
-  textArrangement: string;
-  afterClassExerciseFocus: string;
-  currentTextFunction: string;
-  coreTeachingFocus: string;
-  notSuitableForExpansion: string[];
-  targetAdvice: string;
+export interface UnitAnalysisReport {
+  currentText: string;
+  unitScan: {
+    chineseElement: string;
+    unitThemeTask: string;
+    arrangementLogic: string;
+    currentTextPosition: string;
+    initialJudgment: string;
+  };
+  textDeepReading: {
+    mostWorthTeaching: string;
+    coreTeachingSupport: string;
+    oneCoreAbility: string;
+    commonMisreadings: string[];
+  };
+  studentPath: {
+    entryPoints: string;
+    likelyObstacles: string[];
+    suitableFeelings: string;
+    gradeConnection: string;
+  };
+  classroomTransfer: {
+    oneSentenceLessonPosition: string;
+    coreHandle: string;
+    entrySuggestion: string;
+    progressiveTasks: string[];
+    learningEvidence: string;
+    teachingWarnings: string[];
+  };
+  evidenceChain: Array<{
+    conclusion: string;
+    evidenceSource: string;
+    evidenceSummary: string;
+    judgmentType: "明确判断" | "较强判断" | "谨慎判断" | "资料不足";
+  }>;
+  finalConclusion: string;
 }
 
 export interface StandardAnalysis {
@@ -82,7 +109,7 @@ export interface QualityItem {
 }
 
 export interface Results {
-  unitPositioning?: UnitPositioning;
+  unitAnalysisReport?: UnitAnalysisReport;
   standard?: StandardAnalysis;
   goals?: Goals;
   evidence?: Evidence[];

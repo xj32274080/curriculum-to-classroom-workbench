@@ -3,7 +3,7 @@ import type { DesignInput, Provider, Results } from "../types";
 import { buildFinalMarkdown } from "../markdown";
 import { copyToClipboard, downloadText, sanitizeFilename } from "../utils";
 import FinalLessonPanel from "./FinalLessonPanel";
-import { UnitPositioningCard } from "./ResultCards";
+import { UnitAnalysisReportPanel } from "./ResultCards";
 
 interface Props {
   input: DesignInput;
@@ -29,7 +29,6 @@ export default function PreviewPanel({
   onReset,
 }: Props) {
   const [tab, setTab] = useState<Tab>("preview");
-
   const liveMd = buildFinalMarkdown(input, results);
   const md = finalMarkdown ?? liveMd;
   const pct = Math.round((completed / 6) * 100);
@@ -108,17 +107,17 @@ export default function PreviewPanel({
             <span style={{ width: `${pct}%` }} />
           </div>
           <div className="mode-banner">
-            {input.designMode === "unit-positioning"
-              ? "单元定位模式：先分析整单元材料，再生成更精准的教学设计。"
+            {input.designMode === "unit-analysis"
+              ? "单元精准模式：先生成单元定位型文本解读报告，再进入更精准的教学设计。"
               : "快速模式：基于课标、主题和学情生成基础版设计。"}
           </div>
-          {input.designMode === "unit-positioning" && !input.unitMaterial.trim() && (
+          {input.designMode === "unit-analysis" && !input.unitMaterial.trim() && (
             <div className="mode-banner fallback">
-              未提供整单元材料，当前只能做基础定位；建议补充单元导语、课后题或语文园地内容。
+              单元材料不足，无法完成标准的单元定位型分析。请补充单元导语、课文目录、课后题或语文园地内容。
             </div>
           )}
           <div className={bannerClass}>{bannerText}</div>
-          {results.unitPositioning && <UnitPositioningCard data={results.unitPositioning} />}
+          {results.unitAnalysisReport && <UnitAnalysisReportPanel data={results.unitAnalysisReport} />}
           {finalMarkdown ? (
             <FinalLessonPanel markdown={finalMarkdown} />
           ) : (

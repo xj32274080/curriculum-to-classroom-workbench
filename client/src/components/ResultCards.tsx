@@ -3,7 +3,7 @@
 // Array-valued fields (keywords etc.) are newline-separated in a textarea and
 // re-split by utils.setByPath on the way into state.
 
-import type { Evidence, Goals, StandardAnalysis, Support, TaskItem, UnitPositioning } from "../types";
+import type { Evidence, Goals, StandardAnalysis, Support, TaskItem, UnitAnalysisReport } from "../types";
 
 type EditFn = (path: string, value: string) => void;
 
@@ -67,36 +67,120 @@ export function StandardEditor({ data, onEdit }: { data: StandardAnalysis; onEdi
   );
 }
 
-export function UnitPositioningCard({ data }: { data: UnitPositioning }) {
+export function UnitAnalysisReportPanel({ data }: { data: UnitAnalysisReport }) {
   return (
-    <div className="card unit-card">
-      <div className="card-title">单元定位卡片</div>
-      <div className="mini-grid">
-        <div className="mini">
-          <b>单元主题</b>
-          {data.unitTheme}
-        </div>
+    <div className="report-panel">
+      <h3>单元定位型文本解读报告</h3>
+      <section className="report-section">
+        <h4>一、单元扫描结果</h4>
         <div className="mini">
           <b>语文要素</b>
-          {data.chineseElement}
+          {data.unitScan.chineseElement}
+        </div>
+        <div className="mini">
+          <b>单元主题任务</b>
+          {data.unitScan.unitThemeTask}
         </div>
         <div className="mini">
           <b>编排关系</b>
-          {data.textArrangement}
+          {data.unitScan.arrangementLogic}
         </div>
         <div className="mini">
-          <b>当前课文功能</b>
-          {data.currentTextFunction}
+          <b>当前课文位置</b>
+          {data.unitScan.currentTextPosition}
         </div>
         <div className="mini">
-          <b>核心教学抓手</b>
-          {data.coreTeachingFocus}
+          <b>初步判断</b>
+          {data.unitScan.initialJudgment}
+        </div>
+      </section>
+
+      <section className="report-section">
+        <h4>二、当前课文深度解读</h4>
+        <div className="mini">
+          <b>最值得教的地方</b>
+          {data.textDeepReading.mostWorthTeaching}
         </div>
         <div className="mini">
-          <b>不宜过度展开</b>
-          {data.notSuitableForExpansion.length ? data.notSuitableForExpansion.join("；") : "无"}
+          <b>核心教学支撑</b>
+          {data.textDeepReading.coreTeachingSupport}
         </div>
-      </div>
+        <div className="mini">
+          <b>唯一核心能力</b>
+          {data.textDeepReading.oneCoreAbility}
+        </div>
+        <div className="mini">
+          <b>常见误读</b>
+          {data.textDeepReading.commonMisreadings.join("；") || "无"}
+        </div>
+      </section>
+
+      <section className="report-section">
+        <h4>三、儿童起点与理解路径分析</h4>
+        <div className="mini">
+          <b>进入点</b>
+          {data.studentPath.entryPoints}
+        </div>
+        <div className="mini">
+          <b>可能障碍</b>
+          {data.studentPath.likelyObstacles.join("；") || "无"}
+        </div>
+        <div className="mini">
+          <b>适合抵达的感受</b>
+          {data.studentPath.suitableFeelings}
+        </div>
+        <div className="mini">
+          <b>年级衔接</b>
+          {data.studentPath.gradeConnection}
+        </div>
+      </section>
+
+      <section className="report-section">
+        <h4>四、课堂转化设计</h4>
+        <div className="mini">
+          <b>一句话课时定位</b>
+          {data.classroomTransfer.oneSentenceLessonPosition}
+        </div>
+        <div className="mini">
+          <b>核心抓手</b>
+          {data.classroomTransfer.coreHandle}
+        </div>
+        <div className="mini">
+          <b>进入建议</b>
+          {data.classroomTransfer.entrySuggestion}
+        </div>
+        <div className="mini">
+          <b>递进任务建议</b>
+          {data.classroomTransfer.progressiveTasks.join("；") || "无"}
+        </div>
+        <div className="mini">
+          <b>学习证据</b>
+          {data.classroomTransfer.learningEvidence}
+        </div>
+        <div className="mini">
+          <b>教学提醒</b>
+          {data.classroomTransfer.teachingWarnings.join("；") || "无"}
+        </div>
+      </section>
+
+      <section className="report-section">
+        <h4>五、证据链表</h4>
+        <div className="table-like">
+          {data.evidenceChain.map((item, index) => (
+            <div className="row-card" key={index}>
+              <h4>{item.judgmentType}</h4>
+              <p><b>结论：</b>{item.conclusion}</p>
+              <p><b>证据来源：</b>{item.evidenceSource}</p>
+              <p><b>证据摘要：</b>{item.evidenceSummary}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="report-section">
+        <h4>六、最终结论</h4>
+        <div className="mini">{data.finalConclusion}</div>
+      </section>
     </div>
   );
 }

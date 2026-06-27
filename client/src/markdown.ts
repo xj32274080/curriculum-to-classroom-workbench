@@ -10,7 +10,7 @@ export function buildFinalMarkdown(input: DesignInput, r: Partial<Results>): str
   const tasks = r.tasks || [];
   const support = r.support || ({} as Support);
   const quality = r.quality || [];
-  const unit = r.unitPositioning;
+  const unit = r.unitAnalysisReport;
 
   const evidenceBlock = evidence.length
     ? evidence
@@ -44,13 +44,38 @@ export function buildFinalMarkdown(input: DesignInput, r: Partial<Results>): str
     : "待生成质量体检。";
 
   const unitBlock = unit
-    ? `## 单元定位
-- 单元主题：${unit.unitTheme}
-- 语文要素：${unit.chineseElement}
-- 编排关系：${unit.textArrangement}
-- 当前课文功能：${unit.currentTextFunction}
-- 核心教学抓手：${unit.coreTeachingFocus}
-- 不宜过度展开：${unit.notSuitableForExpansion.join("；") || "无"}
+    ? `## 单元定位型文本解读报告
+
+### 一、单元扫描结果
+- 语文要素：${unit.unitScan.chineseElement}
+- 单元主题任务：${unit.unitScan.unitThemeTask}
+- 编排关系：${unit.unitScan.arrangementLogic}
+- 当前课文位置：${unit.unitScan.currentTextPosition}
+- 初步判断：${unit.unitScan.initialJudgment}
+
+### 二、当前课文深度解读
+- 最值得教：${unit.textDeepReading.mostWorthTeaching}
+- 核心教学支撑：${unit.textDeepReading.coreTeachingSupport}
+- 唯一核心能力：${unit.textDeepReading.oneCoreAbility}
+- 常见误读：${unit.textDeepReading.commonMisreadings.join("；") || "无"}
+
+### 三、儿童起点与理解路径分析
+- 进入点：${unit.studentPath.entryPoints}
+- 可能障碍：${unit.studentPath.likelyObstacles.join("；") || "无"}
+- 适合抵达的感受：${unit.studentPath.suitableFeelings}
+- 年级衔接：${unit.studentPath.gradeConnection}
+
+### 四、课堂转化设计
+- 一句话课时定位：${unit.classroomTransfer.oneSentenceLessonPosition}
+- 唯一核心抓手：${unit.classroomTransfer.coreHandle}
+- 递进任务建议：${unit.classroomTransfer.progressiveTasks.join("；") || "无"}
+- 学习证据：${unit.classroomTransfer.learningEvidence}
+
+### 五、证据链表
+${unit.evidenceChain.map((e) => `- ${e.judgmentType}｜${e.conclusion}｜${e.evidenceSource}：${e.evidenceSummary}`).join("\n")}
+
+### 六、最终结论
+${unit.finalConclusion}
 
 `
     : "";

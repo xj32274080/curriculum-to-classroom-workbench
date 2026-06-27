@@ -21,7 +21,7 @@ import {
   type StandardAnalysis,
   type Support,
   type TaskItem,
-  type UnitPositioning,
+  type UnitAnalysisReport,
 } from "./types";
 
 export default function App() {
@@ -46,7 +46,10 @@ export default function App() {
 
   const showToast = useCallback((msg: string) => setToast(msg), []);
 
-  const inputReady = Boolean(input.standard && (input.topic || input.currentTextTitle));
+  const inputReady =
+    input.designMode === "unit-analysis"
+      ? Boolean(input.topic || input.currentTextTitle)
+      : Boolean(input.standard && (input.topic || input.currentTextTitle));
 
   const completed = [
     inputReady,
@@ -62,8 +65,8 @@ export default function App() {
     setResults((prev) => {
       const next = { ...prev };
       switch (apiStep) {
-        case "unit-positioning":
-          next.unitPositioning = data as UnitPositioning;
+        case "unit-analysis-report":
+          next.unitAnalysisReport = data as UnitAnalysisReport;
           break;
         case "standard-analysis":
           next.standard = data as StandardAnalysis;
@@ -98,6 +101,10 @@ export default function App() {
   // backend; backend unreachable -> client-side safety-net mock.
   const runStep = useCallback(
     async (apiStep: ApiStep, opts?: { advance?: boolean }) => {
+      if (apiStep === "unit-analysis-report" && isBlank(input.unitMaterial)) {
+        showToast("单元材料不足，无法完成标准的单元定位型分析。请补充单元导语、课文目录、课后题或语文园地内容。");
+        return;
+      }
       setLoadingStep(apiStep);
       try {
         const resp = await generate(apiStep, input, results);
@@ -127,15 +134,15 @@ export default function App() {
 
   const handleGenerate = useCallback(() => {
     if (active === 0) return;
-    if (NAV_STEPS[active].apiStep === "standard-analysis" && input.designMode === "unit-positioning" && !results.unitPositioning) {
-      void runStep("unit-positioning");
+    if (NAV_STEPS[active].apiStep === "standard-analysis" && input.designMode === "unit-analysis" && !results.unitAnalysisReport) {
+      void runStep("unit-analysis-report");
       return;
     }
     void runStep(NAV_STEPS[active].apiStep, { advance: true });
-  }, [active, input.designMode, results.unitPositioning, runStep]);
+  }, [active, input.designMode, results.unitAnalysisReport, runStep]);
 
-  const handleGenerateUnitPositioning = useCallback(() => {
-    void runStep("unit-positioning");
+  const handleGenerateUnitAnalysisReport = useCallback(() => {
+    void runStep("unit-analysis-report");
   }, [runStep]);
 
   const handleBuildFinal = useCallback(() => {
@@ -156,12 +163,17 @@ export default function App() {
   }, [showToast]);
 
   const handleStart = useCallback(() => {
-    if (isBlank(input.standard) || (isBlank(input.topic) && isBlank(input.currentTextTitle))) {
+    if (input.designMode === "quick" && (isBlank(input.standard) || (isBlank(input.topic) && isBlank(input.currentTextTitle)))) {
       showToast("请先填写课标和主题/当前课文");
       return;
     }
-    if (input.designMode === "unit-positioning" && isBlank(input.unitMaterial)) {
-      showToast("未提供整单元材料，当前只能做基础定位；建议补充单元导语、课后题或语文园地内容。");
+    if (input.designMode === "unit-analysis" && isBlank(input.topic) && isBlank(input.currentTextTitle)) {
+      showToast("请先填写当前课文");
+      return;
+    }
+    if (input.designMode === "unit-analysis" && isBlank(input.unitMaterial)) {
+      showToast("单元材料不足，无法完成标准的单元定位型分析。请补充单元导语、课文目录、课后题或语文园地内容。");
+      return;
     }
     setActive(1);
   }, [input.currentTextTitle, input.designMode, input.standard, input.topic, input.unitMaterial, showToast]);
@@ -229,11 +241,11 @@ export default function App() {
               results={results}
               loading={loadingStep === step.apiStep}
               finalLoading={loadingStep === "final-lesson"}
-              unitLoading={loadingStep === "unit-positioning"}
+              unitLoading={loadingStep === "unit-analysis-report"}
               hasFinal={Boolean(finalMarkdown)}
               input={input}
               onGenerate={handleGenerate}
-              onGenerateUnitPositioning={handleGenerateUnitPositioning}
+              onGenerateUnitAnalysisReport={handleGenerateUnitAnalysisReport}
               onEdit={handleEdit}
               onNext={() => setActive((a) => Math.min(a + 1, NAV_STEPS.length - 1))}
               onBuildFinal={handleBuildFinal}
