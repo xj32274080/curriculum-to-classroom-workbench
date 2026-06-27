@@ -10,6 +10,7 @@ export function buildFinalMarkdown(input: DesignInput, r: Partial<Results>): str
   const tasks = r.tasks || [];
   const support = r.support || ({} as Support);
   const quality = r.quality || [];
+  const unit = r.unitPositioning;
 
   const evidenceBlock = evidence.length
     ? evidence
@@ -42,11 +43,23 @@ export function buildFinalMarkdown(input: DesignInput, r: Partial<Results>): str
     ? quality.map((q) => `- ${q.dimension}：${q.status}。${q.comment} 建议：${q.suggestion}`).join("\n")
     : "待生成质量体检。";
 
-  const topic = input.topic || "未命名主题";
+  const unitBlock = unit
+    ? `## 单元定位
+- 单元主题：${unit.unitTheme}
+- 语文要素：${unit.chineseElement}
+- 编排关系：${unit.textArrangement}
+- 当前课文功能：${unit.currentTextFunction}
+- 核心教学抓手：${unit.coreTeachingFocus}
+- 不宜过度展开：${unit.notSuitableForExpansion.join("；") || "无"}
+
+`
+    : "";
+
+  const topic = input.topic || input.currentTextTitle || "未命名主题";
 
   return `# ${topic}教学设计
 
-## 一、课标依据
+${unitBlock}## 一、课标依据
 ${input.standard || "待填写课标。"}
 
 ## 二、教材与学情分析

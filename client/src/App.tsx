@@ -21,6 +21,7 @@ import {
   type StandardAnalysis,
   type Support,
   type TaskItem,
+  type UnitPositioning,
 } from "./types";
 
 export default function App() {
@@ -45,7 +46,7 @@ export default function App() {
 
   const showToast = useCallback((msg: string) => setToast(msg), []);
 
-  const inputReady = Boolean(input.topic && input.standard);
+  const inputReady = Boolean(input.standard && (input.topic || input.currentTextTitle));
 
   const completed = [
     inputReady,
@@ -61,6 +62,9 @@ export default function App() {
     setResults((prev) => {
       const next = { ...prev };
       switch (apiStep) {
+        case "unit-positioning":
+          next.unitPositioning = data as UnitPositioning;
+          break;
         case "standard-analysis":
           next.standard = data as StandardAnalysis;
           break;
@@ -123,8 +127,16 @@ export default function App() {
 
   const handleGenerate = useCallback(() => {
     if (active === 0) return;
+    if (NAV_STEPS[active].apiStep === "standard-analysis" && input.designMode === "unit-positioning" && !results.unitPositioning) {
+      void runStep("unit-positioning");
+      return;
+    }
     void runStep(NAV_STEPS[active].apiStep, { advance: true });
-  }, [active, runStep]);
+  }, [active, input.designMode, results.unitPositioning, runStep]);
+
+  const handleGenerateUnitPositioning = useCallback(() => {
+    void runStep("unit-positioning");
+  }, [runStep]);
 
   const handleBuildFinal = useCallback(() => {
     void runStep("final-lesson");
@@ -144,12 +156,15 @@ export default function App() {
   }, [showToast]);
 
   const handleStart = useCallback(() => {
-    if (isBlank(input.standard) || isBlank(input.topic)) {
-      showToast("请先填写课标和主题");
+    if (isBlank(input.standard) || (isBlank(input.topic) && isBlank(input.currentTextTitle))) {
+      showToast("请先填写课标和主题/当前课文");
       return;
     }
+    if (input.designMode === "unit-positioning" && isBlank(input.unitMaterial)) {
+      showToast("未提供整单元材料，当前只能做基础定位；建议补充单元导语、课后题或语文园地内容。");
+    }
     setActive(1);
-  }, [input.standard, input.topic, showToast]);
+  }, [input.currentTextTitle, input.designMode, input.standard, input.topic, input.unitMaterial, showToast]);
 
   const handleReset = useCallback(() => {
     setInput(EMPTY_INPUT);
@@ -214,8 +229,11 @@ export default function App() {
               results={results}
               loading={loadingStep === step.apiStep}
               finalLoading={loadingStep === "final-lesson"}
+              unitLoading={loadingStep === "unit-positioning"}
               hasFinal={Boolean(finalMarkdown)}
+              input={input}
               onGenerate={handleGenerate}
+              onGenerateUnitPositioning={handleGenerateUnitPositioning}
               onEdit={handleEdit}
               onNext={() => setActive((a) => Math.min(a + 1, NAV_STEPS.length - 1))}
               onBuildFinal={handleBuildFinal}

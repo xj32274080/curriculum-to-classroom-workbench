@@ -3,7 +3,7 @@
 // Array-valued fields (keywords etc.) are newline-separated in a textarea and
 // re-split by utils.setByPath on the way into state.
 
-import type { Evidence, Goals, StandardAnalysis, Support, TaskItem } from "../types";
+import type { Evidence, Goals, StandardAnalysis, Support, TaskItem, UnitPositioning } from "../types";
 
 type EditFn = (path: string, value: string) => void;
 
@@ -63,6 +63,40 @@ export function StandardEditor({ data, onEdit }: { data: StandardAnalysis; onEdi
         onEdit={onEdit}
       />
       <ArrayCard title="容易写空的地方" path="standard.riskWarnings" items={data.riskWarnings} onEdit={onEdit} />
+    </div>
+  );
+}
+
+export function UnitPositioningCard({ data }: { data: UnitPositioning }) {
+  return (
+    <div className="card unit-card">
+      <div className="card-title">单元定位卡片</div>
+      <div className="mini-grid">
+        <div className="mini">
+          <b>单元主题</b>
+          {data.unitTheme}
+        </div>
+        <div className="mini">
+          <b>语文要素</b>
+          {data.chineseElement}
+        </div>
+        <div className="mini">
+          <b>编排关系</b>
+          {data.textArrangement}
+        </div>
+        <div className="mini">
+          <b>当前课文功能</b>
+          {data.currentTextFunction}
+        </div>
+        <div className="mini">
+          <b>核心教学抓手</b>
+          {data.coreTeachingFocus}
+        </div>
+        <div className="mini">
+          <b>不宜过度展开</b>
+          {data.notSuitableForExpansion.length ? data.notSuitableForExpansion.join("；") : "无"}
+        </div>
+      </div>
     </div>
   );
 }

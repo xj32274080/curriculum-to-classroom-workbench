@@ -17,7 +17,20 @@ import type {
   StandardAnalysis,
   Support,
   TaskItem,
+  UnitPositioning,
 } from "./types";
+
+export const CLIENT_MOCK_UNIT_POSITIONING: UnitPositioning = {
+  unitTheme: "神话故事中的想象与精神追求",
+  chineseElement: "了解故事起因、经过、结果，感受神话中神奇的想象和鲜明的人物形象。",
+  textArrangement:
+    "本单元由中外神话组成，从创世、抗争、奉献等不同角度呈现神话人物。《精卫填海》篇幅短小，适合作为由情节概括走向证据解释的关键文本。",
+  afterClassExerciseFocus: "课后题和语文园地共同指向讲清故事、抓关键词句交流人物印象、体会神话想象。",
+  currentTextFunction: "帮助学生从复述神话情节推进到依据文言关键词解释人物形象。",
+  coreTeachingFocus: "抓住“衔”“堙”等行为词，把精卫持续填海的动作转化为有证据的人物形象理解。",
+  notSuitableForExpansion: ["不宜过度拓展神话谱系", "不宜把课堂变成文言知识细讲", "不宜脱离文本泛谈坚持精神"],
+  targetAdvice: "后续目标应收束在“讲清故事结构”和“结合关键词句说明精卫形象”，再适度联系神话想象。",
+};
 
 export const CLIENT_MOCK_STANDARD: StandardAnalysis = {
   keywords: ["把握主要内容", "体会思想感情", "结合文本证据"],
@@ -109,6 +122,8 @@ export const CLIENT_MOCK_QUALITY: QualityItem[] = [
 /** Returns the same-shaped mock payload the backend would, for offline fallback. */
 export function clientMockForStep(step: ApiStep, input: DesignInput, draft: Partial<Results>): unknown {
   switch (step) {
+    case "unit-positioning":
+      return CLIENT_MOCK_UNIT_POSITIONING;
     case "standard-analysis":
       return CLIENT_MOCK_STANDARD;
     case "goals":

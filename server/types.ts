@@ -4,6 +4,7 @@
 
 export type ApiStep =
   | "start"
+  | "unit-positioning"
   | "standard-analysis"
   | "goals"
   | "evidence"
@@ -12,8 +13,10 @@ export type ApiStep =
   | "final-lesson";
 
 export type Provider = "mock" | "openai" | "anthropic" | "dify";
+export type DesignMode = "quick" | "unit-positioning";
 
 export interface DesignInput {
+  designMode: DesignMode;
   subject: string;
   grade: string;
   standard: string;
@@ -21,6 +24,21 @@ export interface DesignInput {
   duration: string;
   studentBase: string;
   difficulty: string;
+  unitMaterial: string;
+  currentTextTitle: string;
+  textbook: string;
+  textContent: string;
+}
+
+export interface UnitPositioning {
+  unitTheme: string;
+  chineseElement: string;
+  textArrangement: string;
+  afterClassExerciseFocus: string;
+  currentTextFunction: string;
+  coreTeachingFocus: string;
+  notSuitableForExpansion: string[];
+  targetAdvice: string;
 }
 
 export interface StandardAnalysis {
@@ -65,6 +83,7 @@ export interface QualityItem {
 }
 
 export interface Results {
+  unitPositioning?: UnitPositioning;
   standard?: StandardAnalysis;
   goals?: Goals;
   evidence?: Evidence[];

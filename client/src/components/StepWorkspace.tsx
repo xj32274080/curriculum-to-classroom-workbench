@@ -1,20 +1,24 @@
-import type { NavStep, Results } from "../types";
+import type { DesignInput, NavStep, Results } from "../types";
 import {
   EvidenceEditor,
   GoalsEditor,
   StandardEditor,
   SupportEditor,
   TasksEditor,
+  UnitPositioningCard,
 } from "./ResultCards";
 import QualityCheckPanel from "./QualityCheckPanel";
 
 interface Props {
   step: NavStep;
+  input: DesignInput;
   results: Results;
   loading: boolean;
+  unitLoading: boolean;
   finalLoading: boolean;
   hasFinal: boolean;
   onGenerate: () => void;
+  onGenerateUnitPositioning: () => void;
   onEdit: (path: string, value: string) => void;
   onNext: () => void;
   onBuildFinal: () => void;
@@ -52,11 +56,14 @@ function renderEditor(step: NavStep, results: Results, onEdit: (path: string, va
 
 export default function StepWorkspace({
   step,
+  input,
   results,
   loading,
+  unitLoading,
   finalLoading,
   hasFinal,
   onGenerate,
+  onGenerateUnitPositioning,
   onEdit,
   onNext,
   onBuildFinal,
@@ -66,25 +73,59 @@ export default function StepWorkspace({
     step.key === "quality"
       ? Boolean(results.support && results.quality)
       : Boolean((results as Record<string, unknown>)[step.key]);
+  const generateLabel =
+    step.key === "standard" && input.designMode === "unit-positioning" && !results.unitPositioning
+      ? "生成单元定位"
+      : `生成${step.name}`;
+  const showStepGenerate = !(step.key === "standard" && input.designMode === "unit-positioning" && !results.unitPositioning);
 
   return (
     <>
+      {step.key === "standard" && input.designMode === "unit-positioning" && (
+        <>
+          <div className="hint">
+            <strong>单元定位模式：</strong>
+            先分析整单元材料，再生成更精准的教学设计。
+          </div>
+          {!input.unitMaterial.trim() && (
+            <div className="hint warn-hint">
+              未提供整单元材料，当前只能做基础定位；建议补充单元导语、课后题或语文园地内容。
+            </div>
+          )}
+          <div className="button-row">
+            <button type="button" className="btn" onClick={onGenerateUnitPositioning} disabled={unitLoading}>
+              {unitLoading ? "生成中" : results.unitPositioning ? "重新生成单元定位" : "生成单元定位"}
+              {unitLoading && (
+                <span className="loading-dot">
+                  <i />
+                  <i />
+                  <i />
+                </span>
+              )}
+            </button>
+          </div>
+          {results.unitPositioning && <UnitPositioningCard data={results.unitPositioning} />}
+        </>
+      )}
+
       <div className="hint">
         <strong>{step.name}：</strong>
         {STEP_HINTS[step.key]}
       </div>
 
       <div className="button-row">
-        <button type="button" className="btn green" onClick={onGenerate} disabled={loading}>
-          {loading ? "生成中" : `生成${step.name}`}
-          {loading && (
-            <span className="loading-dot">
-              <i />
-              <i />
-              <i />
-            </span>
-          )}
-        </button>
+        {showStepGenerate && (
+          <button type="button" className="btn green" onClick={onGenerate} disabled={loading || unitLoading}>
+            {loading || unitLoading ? "生成中" : generateLabel}
+            {(loading || unitLoading) && (
+              <span className="loading-dot">
+                <i />
+                <i />
+                <i />
+              </span>
+            )}
+          </button>
+        )}
         {hasResult && step.key !== "quality" && (
           <button type="button" className="btn secondary" onClick={onNext}>
             下一步

@@ -62,18 +62,31 @@ function gridTable(header: string[], widths: number[], rows: string[][]): Table 
 }
 
 export async function exportLessonToDocx(input: DesignInput, results: Results): Promise<void> {
-  const topic = input.topic || "未命名主题";
+  const topic = input.topic || input.currentTextTitle || "未命名主题";
+  const topicName = extractTopicName(topic);
+  const docTitle = topicName === "教学设计" ? "教学设计" : `《${topicName}》教学设计`;
   const goals = results.goals;
   const evidence = results.evidence || [];
   const tasks = results.tasks || [];
   const support = results.support;
   const quality = results.quality || [];
+  const unit = results.unitPositioning;
 
   const children: Array<Paragraph | Table> = [];
 
   // 标题（居中）+ 副标题
-  children.push(center(`${topic}教学设计`, { bold: true, size: 36, after: 60 }));
+  children.push(center(docTitle, { bold: true, size: 36, after: 60 }));
   children.push(center('由“课标到课堂｜AI教学设计工作台”生成', { size: 20, color: "888888", after: 220 }));
+
+  if (unit) {
+    children.push(h1("单元定位"));
+    children.push(p(`单元主题：${unit.unitTheme}`));
+    children.push(p(`语文要素：${unit.chineseElement}`));
+    children.push(p(`编排关系：${unit.textArrangement}`));
+    children.push(p(`当前课文功能：${unit.currentTextFunction}`));
+    children.push(p(`核心教学抓手：${unit.coreTeachingFocus}`));
+    children.push(p(`不宜过度展开：${unit.notSuitableForExpansion.join("；") || "无"}`));
+  }
 
   // 一、课标依据
   children.push(h1("一、课标依据"));
@@ -167,5 +180,5 @@ export async function exportLessonToDocx(input: DesignInput, results: Results): 
 
   const doc = new Document({ sections: [{ properties: {}, children }] });
   const blob = await Packer.toBlob(doc);
-  downloadBlob(`课标到课堂_教学设计_${extractTopicName(input.topic)}.docx`, blob);
+  downloadBlob(`课标到课堂_教学设计_${extractTopicName(topic)}.docx`, blob);
 }

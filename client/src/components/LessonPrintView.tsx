@@ -5,17 +5,30 @@
 import type { DesignInput, Results } from "../types";
 
 export default function LessonPrintView({ input, results }: { input: DesignInput; results: Results }) {
-  const topic = input.topic || "未命名主题";
+  const topic = input.topic || input.currentTextTitle || "未命名主题";
   const goals = results.goals;
   const evidence = results.evidence || [];
   const tasks = results.tasks || [];
   const support = results.support;
   const quality = results.quality || [];
+  const unit = results.unitPositioning;
 
   return (
     <div className="pa-doc">
       <h1 className="pa-title">{topic}教学设计</h1>
       <p className="pa-sub">由“课标到课堂｜AI教学设计工作台”生成</p>
+
+      {unit && (
+        <>
+          <h2 className="pa-h1">单元定位</h2>
+          <p className="pa-p">单元主题：{unit.unitTheme}</p>
+          <p className="pa-p">语文要素：{unit.chineseElement}</p>
+          <p className="pa-p">编排关系：{unit.textArrangement}</p>
+          <p className="pa-p">当前课文功能：{unit.currentTextFunction}</p>
+          <p className="pa-p">核心教学抓手：{unit.coreTeachingFocus}</p>
+          <p className="pa-p">不宜过度展开：{unit.notSuitableForExpansion.join("；") || "无"}</p>
+        </>
+      )}
 
       <h2 className="pa-h1">一、课标依据</h2>
       <p className="pa-p">{input.standard || "待填写。"}</p>

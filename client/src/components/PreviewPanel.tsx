@@ -3,6 +3,7 @@ import type { DesignInput, Provider, Results } from "../types";
 import { buildFinalMarkdown } from "../markdown";
 import { copyToClipboard, downloadText, sanitizeFilename } from "../utils";
 import FinalLessonPanel from "./FinalLessonPanel";
+import { UnitPositioningCard } from "./ResultCards";
 
 interface Props {
   input: DesignInput;
@@ -50,7 +51,7 @@ export default function PreviewPanel({
   };
 
   const handleDownload = () => {
-    downloadText(`${sanitizeFilename(input.topic)}.md`, md);
+    downloadText(`${sanitizeFilename(input.topic || input.currentTextTitle)}.md`, md);
     onToast("已下载 .md 文件");
   };
 
@@ -106,7 +107,18 @@ export default function PreviewPanel({
           <div className="progress">
             <span style={{ width: `${pct}%` }} />
           </div>
+          <div className="mode-banner">
+            {input.designMode === "unit-positioning"
+              ? "单元定位模式：先分析整单元材料，再生成更精准的教学设计。"
+              : "快速模式：基于课标、主题和学情生成基础版设计。"}
+          </div>
+          {input.designMode === "unit-positioning" && !input.unitMaterial.trim() && (
+            <div className="mode-banner fallback">
+              未提供整单元材料，当前只能做基础定位；建议补充单元导语、课后题或语文园地内容。
+            </div>
+          )}
           <div className={bannerClass}>{bannerText}</div>
+          {results.unitPositioning && <UnitPositioningCard data={results.unitPositioning} />}
           {finalMarkdown ? (
             <FinalLessonPanel markdown={finalMarkdown} />
           ) : (

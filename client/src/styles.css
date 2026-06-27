@@ -293,6 +293,50 @@ button {
   gap: 12px;
 }
 
+.mode-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.mode-card {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 8px;
+  cursor: pointer;
+}
+
+.mode-card.active {
+  border-color: #cce9e5;
+  background: #eef7f6;
+}
+
+.mode-card input {
+  width: auto;
+  margin: 3px 0 0;
+}
+
+.mode-card span {
+  font-weight: 900;
+  color: var(--brand);
+}
+
+.mode-card small {
+  grid-column: 2;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.warn-hint {
+  border-color: #fed7aa;
+  background: #fff7ed;
+  color: #9a3412;
+}
+
 .field-block {
   display: grid;
   gap: 6px;
@@ -778,6 +822,7 @@ select:focus {
     top: auto;
   }
   .form-grid,
+  .mode-options,
   .quality-grid,
   .mini-grid {
     grid-template-columns: 1fr;

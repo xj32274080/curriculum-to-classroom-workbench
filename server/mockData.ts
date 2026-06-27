@@ -14,7 +14,20 @@ import type {
   StandardAnalysis,
   Support,
   TaskItem,
+  UnitPositioning,
 } from "./types.js";
+
+export const MOCK_UNIT_POSITIONING: UnitPositioning = {
+  unitTheme: "神话故事中的想象与精神追求",
+  chineseElement: "了解故事起因、经过、结果，感受神话中神奇的想象和鲜明的人物形象。",
+  textArrangement:
+    "本单元由中外神话组成，从创世、抗争、奉献等不同角度呈现神话人物。《精卫填海》篇幅短小，适合作为由情节概括走向证据解释的关键文本。",
+  afterClassExerciseFocus: "课后题和语文园地共同指向讲清故事、抓关键词句交流人物印象、体会神话想象。",
+  currentTextFunction: "帮助学生从复述神话情节推进到依据文言关键词解释人物形象。",
+  coreTeachingFocus: "抓住“衔”“堙”等行为词，把精卫持续填海的动作转化为有证据的人物形象理解。",
+  notSuitableForExpansion: ["不宜过度拓展神话谱系", "不宜把课堂变成文言知识细讲", "不宜脱离文本泛谈坚持精神"],
+  targetAdvice: "后续目标应收束在“讲清故事结构”和“结合关键词句说明精卫形象”，再适度联系神话想象。",
+};
 
 export const MOCK_STANDARD: StandardAnalysis = {
   keywords: ["把握主要内容", "体会思想感情", "结合文本证据"],
@@ -136,6 +149,8 @@ export const MOCK_QUALITY: QualityItem[] = [
 /** Returns the mock payload for a generation step. */
 export function getMockResult(step: ApiStep, _input: DesignInput): unknown {
   switch (step) {
+    case "unit-positioning":
+      return structuredClone(MOCK_UNIT_POSITIONING);
     case "standard-analysis":
       return structuredClone(MOCK_STANDARD);
     case "goals":
@@ -167,6 +182,7 @@ export function buildFinalMarkdown(input: DesignInput, r: Partial<Results>): str
   const tasks = r.tasks || [];
   const support = r.support || ({} as Support);
   const quality = r.quality || [];
+  const unit = r.unitPositioning;
 
   const evidenceBlock = evidence.length
     ? evidence
@@ -199,11 +215,23 @@ export function buildFinalMarkdown(input: DesignInput, r: Partial<Results>): str
     ? quality.map((q) => `- ${q.dimension}：${q.status}。${q.comment} 建议：${q.suggestion}`).join("\n")
     : "待生成质量体检。";
 
-  const topic = input.topic || "未命名主题";
+  const unitBlock = unit
+    ? `## 单元定位
+- 单元主题：${unit.unitTheme}
+- 语文要素：${unit.chineseElement}
+- 编排关系：${unit.textArrangement}
+- 当前课文功能：${unit.currentTextFunction}
+- 核心教学抓手：${unit.coreTeachingFocus}
+- 不宜过度展开：${unit.notSuitableForExpansion.join("；") || "无"}
+
+`
+    : "";
+
+  const topic = input.topic || input.currentTextTitle || "未命名主题";
 
   return `# ${topic}教学设计
 
-## 一、课标依据
+${unitBlock}## 一、课标依据
 ${input.standard || "待填写课标。"}
 
 ## 二、教材与学情分析

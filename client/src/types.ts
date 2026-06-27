@@ -3,6 +3,7 @@
 
 export type ApiStep =
   | "start"
+  | "unit-positioning"
   | "standard-analysis"
   | "goals"
   | "evidence"
@@ -11,8 +12,10 @@ export type ApiStep =
   | "final-lesson";
 
 export type Provider = "mock" | "openai" | "anthropic" | "dify";
+export type DesignMode = "quick" | "unit-positioning";
 
 export interface DesignInput {
+  designMode: DesignMode;
   subject: string;
   grade: string;
   standard: string;
@@ -20,6 +23,21 @@ export interface DesignInput {
   duration: string;
   studentBase: string;
   difficulty: string;
+  unitMaterial: string;
+  currentTextTitle: string;
+  textbook: string;
+  textContent: string;
+}
+
+export interface UnitPositioning {
+  unitTheme: string;
+  chineseElement: string;
+  textArrangement: string;
+  afterClassExerciseFocus: string;
+  currentTextFunction: string;
+  coreTeachingFocus: string;
+  notSuitableForExpansion: string[];
+  targetAdvice: string;
 }
 
 export interface StandardAnalysis {
@@ -64,6 +82,7 @@ export interface QualityItem {
 }
 
 export interface Results {
+  unitPositioning?: UnitPositioning;
   standard?: StandardAnalysis;
   goals?: Goals;
   evidence?: Evidence[];
@@ -90,6 +109,7 @@ export interface NavStep {
 }
 
 export const EMPTY_INPUT: DesignInput = {
+  designMode: "quick",
   subject: "",
   grade: "",
   standard: "",
@@ -97,9 +117,14 @@ export const EMPTY_INPUT: DesignInput = {
   duration: "",
   studentBase: "",
   difficulty: "",
+  unitMaterial: "",
+  currentTextTitle: "",
+  textbook: "",
+  textContent: "",
 };
 
 export const DEMO_INPUT: DesignInput = {
+  designMode: "quick",
   subject: "小学语文",
   grade: "四年级",
   standard: "能初步把握文章主要内容，体会作品表达的思想感情。",
@@ -107,6 +132,11 @@ export const DEMO_INPUT: DesignInput = {
   duration: "1课时",
   studentBase: "能读懂故事大意，但容易停留在情节复述，缺少文本证据意识。",
   difficulty: "学生容易只复述故事，不能结合文本证据解释精卫形象。",
+  unitMaterial:
+    "单元导语：本单元围绕神话故事展开，引导学生了解故事内容，感受神话中神奇的想象和鲜明的人物形象。\n课文编排：《盘古开天地》《精卫填海》《普罗米修斯》《女娲补天》。\n课后题方向：讲清故事的起因、经过、结果；交流人物给自己留下的印象；体会神话故事中神奇的想象。",
+  currentTextTitle: "精卫填海",
+  textbook: "统编版小学语文四年级上册第四单元",
+  textContent: "炎帝之少女，名曰女娃。女娃游于东海，溺而不返，故为精卫，常衔西山之木石，以堙于东海。",
 };
 
 export const NAV_STEPS: NavStep[] = [

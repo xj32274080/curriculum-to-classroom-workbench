@@ -7,7 +7,8 @@ import type { ApiStep, DesignInput, GenerateRequest, Provider, Results } from ".
 import { PROMPT_BUILDERS } from "./prompts.js";
 import { getMockResult, buildFinalMarkdown } from "./mockData.js";
 
-const SYSTEM = "你是资深教学设计专家，严格按用户要求输出，内容专业、具体、可落地。";
+const SYSTEM =
+  "你是面向小学语文教师的教学设计专家。请把课标要求转化为可观察、可评价、可在课堂中落实的学习目标；围绕目标设计评价证据和任务链，说明学生要做什么、产出什么、教师如何判断。避免空泛口号、泛化表述和脱离文本的套话，输出要具体、结构清晰、便于教师直接修改使用。";
 const TIMEOUT_MS = 45_000;
 
 function env(k: string): string {
@@ -85,6 +86,7 @@ function validateShape(step: ApiStep, data: unknown): void {
     throw new Error("返回结构异常: " + msg);
   };
   switch (step) {
+    case "unit-positioning":
     case "standard-analysis":
     case "goals":
       if (!isObj(data)) fail(`应为对象，实际为 ${Array.isArray(data) ? "数组" : typeof data}`);
