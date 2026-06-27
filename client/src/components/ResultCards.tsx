@@ -7,6 +7,14 @@ import type { Evidence, Goals, StandardAnalysis, Support, TaskItem, UnitAnalysis
 
 type EditFn = (path: string, value: string) => void;
 
+/** 证据链判断性质 → 小标签样式（纯展示，不改变数据） */
+function evTagClass(t: UnitAnalysisReport["evidenceChain"][number]["judgmentType"]): string {
+  if (t === "明确判断") return "ev-tag--strong";
+  if (t === "较强判断") return "ev-tag--medium";
+  if (t === "谨慎判断") return "ev-tag--caution";
+  return "ev-tag--weak";
+}
+
 export function ArrayCard({
   title,
   path,
@@ -167,8 +175,8 @@ export function UnitAnalysisReportPanel({ data }: { data: UnitAnalysisReport }) 
         <h4>五、证据链表</h4>
         <div className="table-like">
           {data.evidenceChain.map((item, index) => (
-            <div className="row-card" key={index}>
-              <h4>{item.judgmentType}</h4>
+            <div className="row-card ev-row" key={index}>
+              <span className={`ev-tag ${evTagClass(item.judgmentType)}`}>{item.judgmentType}</span>
               <p><b>结论：</b>{item.conclusion}</p>
               <p><b>证据来源：</b>{item.evidenceSource}</p>
               <p><b>证据摘要：</b>{item.evidenceSummary}</p>

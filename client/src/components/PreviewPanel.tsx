@@ -109,7 +109,7 @@ export default function PreviewPanel({
           <div className="preview-box">{md || "请先填写设计起点并逐步生成。"}</div>
         )}
         <div className="button-row">
-          <button type="button" className="btn green" onClick={handleCopy}>
+          <button type="button" className="btn secondary" onClick={handleCopy}>
             复制Markdown
           </button>
           <button type="button" className="btn secondary" onClick={handleDownload}>
@@ -117,7 +117,7 @@ export default function PreviewPanel({
           </button>
           <button
             type="button"
-            className="btn green"
+            className="btn secondary"
             onClick={handleWord}
             disabled={!hasContent}
             title={hasContent ? "下载 Word 文档" : "请先生成至少一步内容"}

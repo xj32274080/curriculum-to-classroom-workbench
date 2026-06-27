@@ -124,7 +124,7 @@ export default function StartPanel({ input, onChange, onFillDemo, onStart }: Pro
         <button type="button" className="btn secondary" onClick={onFillDemo}>
           一键填入示例
         </button>
-        <button type="button" className="btn green" onClick={onStart}>
+        <button type="button" className="btn" onClick={onStart}>
           开始设计
         </button>
       </div>

@@ -115,7 +115,7 @@ export default function StepWorkspace({
 
       <div className="button-row">
         {showStepGenerate && (
-          <button type="button" className="btn green" onClick={onGenerate} disabled={loading || unitLoading}>
+          <button type="button" className="btn" onClick={onGenerate} disabled={loading || unitLoading}>
             {loading || unitLoading ? "生成中" : generateLabel}
             {(loading || unitLoading) && (
               <span className="loading-dot">
