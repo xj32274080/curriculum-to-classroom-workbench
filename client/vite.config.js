@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 // Dev server proxies /api -> backend (default http://localhost:3001)
 // so the frontend can call a relative "/api/generate" with no CORS concerns.
 export default defineConfig({
+    base: "./",
     plugins: [react()],
     server: {
         port: 5173,
