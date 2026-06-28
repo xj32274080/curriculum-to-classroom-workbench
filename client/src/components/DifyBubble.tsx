@@ -16,15 +16,16 @@ const STYLE_ID = "dify-bubble-styles";
 
 /**
  * bubble 按钮与聊天窗的样式覆盖。
- * - 按钮用主题蓝并置于顶层。
+ * - 默认笑脸按钮隐藏（视觉由 AIAssistantLauncher 接管），但保留其位置用于聊天窗定位。
  * - 底部留出 5.5rem，避免遮挡“打印 / 导出 PDF”“下载 Word”等关键按钮。
  */
 const BUBBLE_STYLES = `
 #dify-chatbot-bubble-button {
-  background-color: #1C64F2 !important;
-  z-index: 9999 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
   bottom: 5.5rem !important;
   right: 1.5rem !important;
+  z-index: 9999 !important;
 }
 #dify-chatbot-bubble-window {
   width: 24rem !important;

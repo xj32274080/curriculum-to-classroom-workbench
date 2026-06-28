@@ -4,6 +4,7 @@ import StartPanel from "./components/StartPanel";
 import StepWorkspace from "./components/StepWorkspace";
 import PreviewPanel from "./components/PreviewPanel";
 import DifyBubble from "./components/DifyBubble";
+import AIAssistantLauncher from "./components/AIAssistantLauncher";
 import LessonPrintView from "./components/LessonPrintView";
 import { generate, fetchMode } from "./api";
 import { clientMockForStep } from "./clientMock";
@@ -282,6 +283,8 @@ export default function App() {
 
       {/* 右下角悬浮 AI 引导助手（Dify bubble），全局常驻，不依赖当前步骤 */}
       <DifyBubble />
+      {/* 自定义浮动入口（替代 Dify 默认笑脸） */}
+      <AIAssistantLauncher />
 
       {hasContent && (
         <div className="print-area">
